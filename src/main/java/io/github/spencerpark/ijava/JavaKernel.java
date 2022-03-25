@@ -25,6 +25,7 @@ package io.github.spencerpark.ijava;
 
 import io.github.spencerpark.ijava.execution.*;
 import io.github.spencerpark.ijava.magics.ClasspathMagics;
+import io.github.spencerpark.ijava.magics.CreateJar;
 import io.github.spencerpark.ijava.magics.MavenResolver;
 import io.github.spencerpark.jupyter.kernel.BaseKernel;
 import io.github.spencerpark.jupyter.kernel.LanguageInfo;
@@ -32,6 +33,7 @@ import io.github.spencerpark.jupyter.kernel.ReplacementOptions;
 import io.github.spencerpark.jupyter.kernel.display.DisplayData;
 import io.github.spencerpark.jupyter.kernel.magic.registry.Magics;
 import io.github.spencerpark.jupyter.kernel.magic.common.Load;
+import io.github.spencerpark.jupyter.kernel.magic.common.WriteFile;
 import io.github.spencerpark.jupyter.kernel.util.CharPredicate;
 import io.github.spencerpark.jupyter.kernel.util.StringStyler;
 import io.github.spencerpark.jupyter.kernel.util.TextColor;
@@ -66,6 +68,8 @@ public class JavaKernel extends BaseKernel {
 
     private final CodeEvaluator evaluator;
     private final MavenResolver mavenResolver;
+    private final WriteFile writeFile;
+    private final CreateJar createJar;
 
     private final MagicsSourceTransformer magicsTransformer;
     private final Magics magics;
@@ -89,9 +93,12 @@ public class JavaKernel extends BaseKernel {
                 .sysStdin()
                 .build();
         this.mavenResolver = new MavenResolver(this::addToClasspath);
-
+        this.writeFile = new WriteFile();
+        this.createJar = new CreateJar();
         this.magicsTransformer = new MagicsSourceTransformer();
         this.magics = new Magics();
+        this.magics.registerMagics(this.writeFile);
+        this.magics.registerMagics(this.createJar);
         this.magics.registerMagics(this.mavenResolver);
         this.magics.registerMagics(new ClasspathMagics(this::addToClasspath));
         this.magics.registerMagics(new Load(List.of(".jsh", ".jshell", ".java", ".ijava"), this::eval));

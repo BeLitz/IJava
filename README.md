@@ -4,6 +4,18 @@
 
 ![display-img](docs/img/display-img.png)
 
+Forked IJava version which includes a cell magic to write to file and a line magic to create a jar file.
+
+* cell magic "writefile"
+
+A cell magic from a dependency registered with the java kernel. Example: %%writefile input/RandomForestClassifierIris.java
+
+* line magic "createJar"
+
+A line magic to create jar files from java source code. Example: %createJar -classpath lib -source input
+
+See below for original IJava documentation:
+
 A [Jupyter](http://jupyter.org/) kernel for executing Java code. The kernel executes code via the new [JShell tool](https://docs.oracle.com/javase/9/jshell/introduction-jshell.htm). Some of the additional commands should be supported as needed via a syntax similar to the ipython magics.
 
 The kernel is fully functional. Check out the [list of features](#features) further down in the README. Any requests for new ones or prioritizing current requests are welcomed in the [issues](https://github.com/SpencerPark/IJava/issues) along with bug requests, installation help, or other questions.
